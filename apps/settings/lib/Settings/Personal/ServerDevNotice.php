@@ -26,7 +26,6 @@ namespace OCA\Settings\Settings\Personal;
 
 use OCA\Viewer\Event\LoadViewer;
 use OCP\AppFramework\Http\TemplateResponse;
-use OCP\AppFramework\Services\IInitialState;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Files\IRootFolder;
 use OCP\IUserSession;
@@ -48,19 +47,14 @@ class ServerDevNotice implements ISettings {
 	/** @var IUserSession */
 	private $userSession;
 
-	/** @var IInitialState */
-	private $initialState;
-
 	public function __construct(IRegistry $registry,
 								IEventDispatcher $eventDispatcher,
 								IRootFolder $rootFolder,
-								IUserSession $userSession,
-								IInitialState $initialState) {
+								IUserSession $userSession) {
 		$this->registry = $registry;
 		$this->eventDispatcher = $eventDispatcher;
 		$this->rootFolder = $rootFolder;
 		$this->userSession = $userSession;
-		$this->initialState = $initialState;
 	}
 
 	/**
@@ -68,10 +62,10 @@ class ServerDevNotice implements ISettings {
 	 */
 	public function getForm() {
 		$userFolder = $this->rootFolder->getUserFolder($this->userSession->getUser()->getUID());
+
 		// If the Reasons to use Nextcloud.pdf file is here, let's init Viewer
 		if ($userFolder->nodeExists('Reasons to use Nextcloud.pdf')) {
 			$this->eventDispatcher->dispatch(LoadViewer::class, new LoadViewer());
-			$this->initialState->provideInitialState('settings', 'reasons-use-nextcloud-pdf', true);
 			Util::addScript('settings', 'settings-nextcloud-pdf');
 		}
 
