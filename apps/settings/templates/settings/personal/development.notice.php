@@ -1,7 +1,9 @@
 <div class="section development-notice">
-	<p>
-		<button class="link-button icon-file">Reasons to use Nextcloud in your organization</button>
-	</p>
+	<?php if($_['has-reasons-use-nextcloud-pdf']) { ?>
+		<p>
+			<button id="open-reasons-use-nextcloud-pdf" class="link-button icon-file">Reasons to use Nextcloud in your organization</button>
+		</p>
+	<?php } ?>
 	<p>
 		<?php print_unescaped(str_replace(
 			[
